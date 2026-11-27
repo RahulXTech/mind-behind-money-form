@@ -1,0 +1,11 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local-only files
+.env
+*.log
+.claude/settings.local.json
