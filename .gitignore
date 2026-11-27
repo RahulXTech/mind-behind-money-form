@@ -9,3 +9,7 @@ desktop.ini
 .env
 *.log
 .claude/settings.local.json
+
+# Node / Vite
+node_modules/
+dist/

@@ -3,13 +3,20 @@
 A branded contact page for business people coming from the Instagram reels. Each submission
 (Name, Mobile, Email, Opinion) is saved as a new row in a Google Sheet.
 
+Built with React + Vite.
+
 ```
-index.html                  the page
-style.css                   brand styling (cream / teal / gold, Poppins)
-script.js                   validation + sending to Google Sheet  ← set SCRIPT_URL here
-assets/logo.png, favicon    your logo
+index.html                  page <head> (fonts, icons, meta tags)
+src/App.jsx                 the form: steps, validation, sending to Google Sheet
+src/config.js               ← set SCRIPT_URL (and INSTAGRAM_URL) here
+src/translations.js         English / Hinglish text for every Hindi line
+src/style.css               brand styling (cream / teal / gold, Poppins)
+public/assets/              logo + favicon
 google-apps-script/Code.gs  paste this into Google Apps Script
 ```
+
+Run locally: `npm install` once, then `npm run dev` (opens a local preview).
+Build for hosting: `npm run build` → upload the contents of the `dist/` folder.
 
 ## Step 1: Create the Google Sheet + script (5 minutes)
 
@@ -40,7 +47,7 @@ saved comma-separated in one cell.
 
 ## Step 2: Connect the page
 
-Open `script.js` and paste the URL:
+Open `src/config.js` and paste the URL:
 
 ```js
 const CONFIG = {
@@ -53,10 +60,9 @@ Until `SCRIPT_URL` is set, the form runs in **demo mode**: it shows the success 
 
 ## Step 3: Put it online (free)
 
-Pick one:
-- **Netlify Drop**: go to <https://app.netlify.com/drop> and drag this whole folder in. You get a live link instantly.
-- **GitHub Pages**: push the folder to a repo and enable Pages.
-- **Hostinger / any hosting**: upload all files to `public_html`.
+First run `npm run build`. The ready-to-upload site is in the `dist/` folder. Then pick one:
+- **Netlify Drop**: go to <https://app.netlify.com/drop> and drag the `dist` folder in. You get a live link instantly.
+- **Hostinger / any hosting**: upload everything inside `dist/` to `public_html`.
 
 Then put the link in your **Instagram bio** or **Add link** on the profile, and mention it in your reels/captions
 ("Business idea? Link in bio 👆").
