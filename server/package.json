@@ -1,0 +1,10 @@
+{
+  "name": "mind-behind-money-api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Razorpay orders + payment verification + MongoDB storage for 1:1 session bookings (Vercel functions)",
+  "dependencies": {
+    "mongodb": "6.10.0"
+  }
+}

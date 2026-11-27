@@ -1,19 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { CONFIG } from "./config.js";
 import { translate } from "./translations.js";
+import { CALL_TIMES, COUNTRY_CODES, ChipContent, RULES, cx } from "./shared.jsx";
+import Booking from "./Booking.jsx";
 
 /* ================= Options (values are what the Google Sheet receives) ================= */
-const COUNTRY_CODES = [
-  ["+91", "🇮🇳 +91"],
-  ["+971", "🇦🇪 +971"],
-  ["+1", "🇺🇸 +1"],
-  ["+44", "🇬🇧 +44"],
-  ["+65", "🇸🇬 +65"],
-  ["+61", "🇦🇺 +61"],
-  ["+977", "🇳🇵 +977"],
-  ["+880", "🇧🇩 +880"],
-];
-
 const HELP = [
   { value: "नया बिज़नेस शुरू करना", icon: "rocket-launch" },
   { value: "मौजूदा बिज़नेस में सपोर्ट", icon: "chart-line-up" },
@@ -68,11 +59,6 @@ const START_WHEN = [
 const HEARD_FROM = [
   { value: "Instagram" }, { value: "YouTube" }, { value: "किसी दोस्त से" }, { value: "Other", reveal: true },
 ];
-const CALL_TIMES = [
-  { value: "सुबह", icon: "sun-horizon" },
-  { value: "दोपहर", icon: "sun" },
-  { value: "शाम", icon: "moon" },
-];
 
 // Radio fields whose "Other" / "हाँ है" option reveals a text box: [option value, text-box field]
 const REVEALS = {
@@ -98,30 +84,6 @@ const HTML_LANG = { en: "en", hi: "hi", hinglish: "hi-Latn" };
 const ERROR_MSG = "फ़ॉर्म भेजने में दिक्कत आई। कृपया इंटरनेट चेक करके दोबारा कोशिश करें।";
 const isConfigured = CONFIG.SCRIPT_URL.startsWith("https://script.google.com/");
 
-// ---------- Validation (only step 1 has required fields) ----------
-const RULES = {
-  name: (v) => {
-    if (!v) return "कृपया अपना नाम लिखें।";
-    if (v.length < 2) return "नाम बहुत छोटा है।";
-    if (/\d/.test(v)) return "नाम में नंबर नहीं होने चाहिए।";
-    return "";
-  },
-  mobile: (v, countryCode) => {
-    const digits = v.replace(/\D/g, "");
-    if (!digits) return "कृपया अपना फ़ोन / WhatsApp नंबर लिखें।";
-    if (countryCode === "+91") {
-      if (!/^[6-9]\d{9}$/.test(digits)) return "कृपया सही 10 अंकों का मोबाइल नंबर लिखें।";
-    } else if (digits.length < 6 || digits.length > 14) {
-      return "कृपया सही मोबाइल नंबर लिखें।";
-    }
-    return "";
-  },
-  email: (v) => {
-    if (!v) return "कृपया अपना ईमेल लिखें।";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "कृपया सही ईमेल लिखें (जैसे name@gmail.com)।";
-    return "";
-  },
-};
 const RULE_ORDER = ["name", "mobile", "email"];
 
 function savedLang() {
@@ -132,18 +94,7 @@ function savedLang() {
   return "en";
 }
 
-const cx = (...names) => names.filter(Boolean).join(" ");
-
 /* ================= Small building blocks ================= */
-function ChipContent({ icon, text }) {
-  return (
-    <span>
-      {icon && <b aria-hidden="true"><i className={`ph ph-${icon}`}></i></b>}
-      {text}
-    </span>
-  );
-}
-
 // Text box shown under a question when "Other" / "हाँ है" is picked; focuses itself when it appears
 function Reveal({ show, name, value, onChange, placeholder, maxLength }) {
   const inputRef = useRef(null);
@@ -170,6 +121,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, msg: "" });
   const [done, setDone] = useState(null); // { first } once submitted
+  const [view, setView] = useState("form"); // "form" | "booking" (1:1 session)
+  const [bookingDone, setBookingDone] = useState(false);
 
   const cardRef = useRef(null);
   const honeypotRef = useRef(null);
@@ -349,6 +302,30 @@ export default function App() {
     coinRain();
   }
 
+  // ---------- 1:1 session booking ----------
+  function openBooking() {
+    setBookingDone(false);
+    setView("booking");
+    const card = cardRef.current;
+    if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function closeBooking() {
+    setView("form");
+    setBookingDone(false);
+    const card = cardRef.current;
+    if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  const sessionCta = (
+    <button type="button" className="session-cta" onClick={openBooking}>
+      <i className="ph ph-video-camera" aria-hidden="true"></i>
+      <span>
+        <strong>{t("1:1 सेशन चाहिए?")}</strong>
+        <small>{t("15 मिनट ₹499 · 45 मिनट ₹1,000")}</small>
+      </span>
+      <i className="ph ph-arrow-right" aria-hidden="true"></i>
+    </button>
+  );
+
   function fillAgain() {
     setValues(INITIAL_VALUES);
     setErrors({});
@@ -428,8 +405,8 @@ export default function App() {
 
         {/* Right: form card */}
         <section className="card" id="card" aria-labelledby="form-title" ref={cardRef}>
-          <div className="card-head" id="cardHead" hidden={!!done}>
-            <h3 id="form-title">{t("हमसे जुड़ें")}</h3>
+          <div className="card-head" id="cardHead" hidden={view === "booking" ? bookingDone : !!done}>
+            <h3 id="form-title">{t(view === "booking" ? "1:1 सेशन बुक करें" : "हमसे जुड़ें")}</h3>
             <div className="lang-toggle" role="group" aria-label="भाषा / Language">
               {[["en", "English"], ["hi", "हिंदी"], ["hinglish", "Hinglish"]].map(([code, label]) => (
                 <button key={code} type="button" data-lang={code} aria-pressed={String(lang === code)}
@@ -438,7 +415,7 @@ export default function App() {
             </div>
           </div>
 
-          <form id="connectForm" noValidate onSubmit={onSubmit} hidden={!!done}>
+          <form id="connectForm" noValidate onSubmit={onSubmit} hidden={!!done || view === "booking"}>
             {/* Progress */}
             <div className="progress" aria-live="polite">
               <span className="step-count" id="stepCount">{`${t("स्टेप")} ${current + 1} / ${STEP_COUNT}`}</span>
@@ -598,15 +575,23 @@ export default function App() {
             </div>
 
             <p className={cx("form-alert", alert.show && "show")} id="formAlert" role="alert">{alert.msg && t(alert.msg)}</p>
+            {sessionCta}
           </form>
 
+          {view === "booking" && (
+            <Booking t={t} lang={lang} onBack={closeBooking}
+              prefill={{ name: values.name, countryCode: values.countryCode, mobile: values.mobile, email: values.email }}
+              onConfirmed={() => { setBookingDone(true); coinRain(); }} />
+          )}
+
           {/* Success state */}
-          <div className="success" id="success" hidden={!done}>
+          <div className="success" id="success" hidden={!done || view === "booking"}>
             <div className="success-icon">
               <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
             </div>
             <h3>{t("धन्यवाद,") + " "}<span id="successName">{done?.first || t("दोस्त")}</span>! <i className="ph ph-hands-clapping" aria-hidden="true"></i></h3>
             <p id="successMsg">{t("आपकी जानकारी हमें मिल गई है। हमारी टीम जल्द ही आपसे संपर्क करेगी।")}</p>
+            {sessionCta}
             <a className="insta" id="instaLink" href={CONFIG.INSTAGRAM_URL || "#"} target="_blank" rel="noopener" hidden={!CONFIG.INSTAGRAM_URL}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5zM17.5 5.5a1 1 0 1 0 1 1 1 1 0 0 0-1-1z"/></svg>
               {t("Instagram पर और वीडियो देखें")}

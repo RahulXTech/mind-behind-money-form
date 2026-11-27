@@ -519,3 +519,59 @@ body {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .success-icon circle, .success-icon path { stroke-dashoffset: 0; }
 }
+
+/* ============ 1:1 session booking ============ */
+.session-cta {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; margin-top: 16px; padding: 12px 16px;
+  font: inherit; color: var(--navy); text-align: left;
+  background: rgba(227, 169, 58, .12);
+  border: 2px dashed rgba(185, 128, 30, .45); border-radius: 14px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.session-cta:hover { background: rgba(227, 169, 58, .2); border-color: var(--gold-dark); }
+.session-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.session-cta > .ph { flex-shrink: 0; font-size: 26px; color: var(--gold-dark); }
+.session-cta > .ph-arrow-right { font-size: 18px; color: var(--teal); transition: transform .2s; }
+.session-cta:hover > .ph-arrow-right { transform: translateX(3px); }
+.session-cta span { flex: 1; display: flex; flex-direction: column; line-height: 1.45; }
+.session-cta strong { font-size: 14px; font-weight: 700; }
+.session-cta small { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); }
+.success .session-cta { max-width: 380px; margin: 0 auto 16px; }
+
+/* Plan cards */
+.chips.plans .chip span { gap: 2px; }
+.plans .price { font-size: 20px; font-weight: 800; color: var(--teal); line-height: 1.35; }
+.plans small { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); line-height: 1.5; }
+.chip input:checked + span .price, .chip input:checked + span small { color: #fff; }
+
+.control input[type="date"] { min-height: 49px; cursor: pointer; }
+
+.pay-note {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 12px; font-size: 12.5px; font-weight: 500; color: var(--ink-soft); text-align: center;
+}
+.pay-note.test { color: #8a5f12; }
+.pay-note .ph { font-size: 15px; }
+
+/* Confirmation */
+.booking-summary {
+  max-width: 380px; margin: 0 auto 16px; padding: 6px 16px;
+  text-align: left; background: var(--field);
+  border: 2px solid var(--line); border-radius: 16px;
+}
+.booking-summary div { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; }
+.booking-summary div + div { border-top: 1px solid var(--line); }
+.booking-summary dt { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+.booking-summary dd { font-size: 14px; font-weight: 600; text-align: right; word-break: break-all; }
+.success.booked .pay-note { margin: -4px 0 14px; }
+.submit.receipt-btn { display: inline-flex; flex: none; padding: 14px 24px; margin-bottom: 8px; }
+.receipt-btn .ph { font-size: 20px; }
+
+@media (max-width: 600px) {
+  .session-cta { margin: 0 0 18px; }
+  .chips.plans .chip:last-child:nth-child(odd) { grid-column: auto; }
+  .control input[type="date"] { font-size: 16px; }
+  .pay-note { margin: 0 0 18px; }
+}

@@ -67,6 +67,48 @@ First run `npm run build`. The ready-to-upload site is in the `dist/` folder. Th
 Then put the link in your **Instagram bio** or **Add link** on the profile, and mention it in your reels/captions
 ("Business idea? Link in bio 👆").
 
+## 1:1 session booking (15 min ₹499 · 45 min ₹1,000)
+
+Visitors can book a paid 1:1 session from the form card and from the thank-you screen.
+Flow: choose plan → details, date, time → pay → booking saved → PDF receipt downloads.
+
+| Part | File |
+|---|---|
+| Prices / plans | `src/config.js` → `SESSION_PLANS` (and `server/lib/plans.js`, which decides the real price) |
+| Booking screen | `src/Booking.jsx` |
+| Razorpay window | `src/payment.js` |
+| Server calls + local backup | `src/bookingStore.js` |
+| PDF receipt | `src/receiptPdf.js` (made in the browser, no library) |
+| Server (Vercel) | `server/api/create-order.js`, `server/api/verify-payment.js` |
+
+While `API_URL` in `src/config.js` is empty the booking runs in **test mode**: no money is taken, the receipt is watermarked,
+and bookings stay in the visitor's browser (localStorage `mbm-bookings`).
+
+### How a real payment works
+
+```
+Website ──► server /api/create-order ──► Razorpay: create order for ₹499 / ₹1000   (MongoDB: booking "created")
+Website ──► Razorpay payment window (UPI / card / netbanking)
+Website ──► server /api/verify-payment ──► checks Razorpay signature with Key Secret (MongoDB: booking "paid")
+Website ──► confirmation screen + PDF receipt
+```
+
+### Razorpay + MongoDB setup
+
+1. **Razorpay**: sign up at razorpay.com → Test Mode → Account & Settings → API Keys → Generate Key.
+   Keep the Key ID and Key Secret somewhere safe.
+2. **MongoDB Atlas** (free): create a cluster → Database Access: add a user → Network Access: allow `0.0.0.0/0`
+   (Vercel has no fixed IP) → Connect → Drivers → copy the `mongodb+srv://…` link.
+3. **Vercel** (free): sign in with GitHub → Add New Project → import `mind-behind-money-form` →
+   **Root Directory: `server`**, Framework: Other → Environment Variables (see `server/.env.example`):
+   `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `MONGODB_URI`, `MONGODB_DB`, `ALLOWED_ORIGINS` → Deploy.
+4. Put the Vercel address (e.g. `https://mind-behind-money-api.vercel.app`) in `API_URL` in `src/config.js` and push.
+5. Test with Razorpay test payments (UPI `success@razorpay`). Bookings appear in MongoDB → `mindbehindmoney` → `bookings`.
+6. Going live: finish Razorpay KYC, then in Vercel replace the two Razorpay variables with the **live** keys and redeploy.
+
+Never put the Razorpay **Key Secret** or the **MongoDB link** in `src/`: anyone can read the website's code.
+They go only into Vercel's Environment Variables.
+
 ## Updating the script later
 
 If you edit `Code.gs`, go to **Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy**.
