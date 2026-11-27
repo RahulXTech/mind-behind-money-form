@@ -4,7 +4,7 @@ name: Build and publish to deploy branch
 
 on:
   push:
-    branches: [main, react] # "react" is only needed until the React code is merged into main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
