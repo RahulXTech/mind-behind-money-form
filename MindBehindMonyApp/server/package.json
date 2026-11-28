@@ -6,7 +6,7 @@
   "description": "Razorpay orders + payment verification + MongoDB storage for 1:1 session bookings (Vercel functions or `npm start` on Hostinger / any Node host)",
   "main": "index.js",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "echo \"API server: no build step needed\"",
     "start": "node index.js",
     "test": "node --test test/*.test.js"
   },
