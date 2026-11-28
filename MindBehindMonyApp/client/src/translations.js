@@ -4,6 +4,13 @@
  * Hindi, so the sheet stays consistent whichever language the visitor picks.
  */
 const HINGLISH_RAW = {
+  // Hero
+  "अपने बिज़नेस को": "Apne business ko",
+  "अगले लेवल": "agle level",
+  "पर ले जाएँ": "par le jaayein",
+  "फ़ॉलोअर्स": "Followers",
+  "व्यूज़ / 30 दिन": "Views / 30 din",
+
   // Header + step titles
   "हमसे जुड़ें": "Humse Judein",
   "आपकी जानकारी": "Aapki Jaankari",
@@ -185,6 +192,10 @@ const HINGLISH_RAW = {
  * Same keys as the Hinglish list above.
  */
 const ENGLISH_RAW = {
+  // Hero (the headline itself is written in English in App.jsx because the word order differs)
+  "फ़ॉलोअर्स": "Followers",
+  "व्यूज़ / 30 दिन": "Views / 30 days",
+
   // Header + step titles
   "हमसे जुड़ें": "Connect With Us",
   "आपकी जानकारी": "Your Details",

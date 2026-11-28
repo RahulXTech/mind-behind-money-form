@@ -404,11 +404,15 @@ export default function App() {
             </div>
           </div>
 
-          <h2 className="pitch">अपने बिज़नेस को <br className="hide-sm" /><span className="hl">अगले लेवल</span> पर ले जाएँ</h2>
+          {lang === "en" ? (
+            <h2 className="pitch">Take your business <br className="hide-sm" />to the <span className="hl">next level</span></h2>
+          ) : (
+            <h2 className="pitch">{t("अपने बिज़नेस को")} <br className="hide-sm" /><span className="hl">{t("अगले लेवल")}</span> {t("पर ले जाएँ")}</h2>
+          )}
 
           <ul className="stats">
-            <li><strong>22K+</strong><span>फ़ॉलोअर्स</span></li>
-            <li><strong>4.3M</strong><span>व्यूज़ / 30 दिन</span></li>
+            <li><strong>30K+</strong><span>{t("फ़ॉलोअर्स")}</span></li>
+            <li><strong>5M+</strong><span>{t("व्यूज़ / 30 दिन")}</span></li>
           </ul>
         </section>
 

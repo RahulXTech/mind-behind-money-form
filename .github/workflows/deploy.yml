@@ -24,15 +24,18 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: MindBehindMonyApp/client/package-lock.json
 
       - run: npm ci
+        working-directory: MindBehindMonyApp/client
       - run: npm run build
+        working-directory: MindBehindMonyApp/client
 
       - name: Publish dist/ to the deploy branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: deploy
-          publish_dir: ./dist
+          publish_dir: ./MindBehindMonyApp/client/dist
           force_orphan: true
           commit_message: "Deploy ${{ github.sha }}"
