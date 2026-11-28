@@ -122,7 +122,7 @@ Setup (do it once in **Test Mode** and again later in **Live Mode** — they hav
 1. Make a webhook secret — a long random value, **different from the Key Secret**:
    `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 2. Razorpay Dashboard → **Account & Settings → Webhooks → + Add New Webhook**:
-   - Webhook URL: `https://api.axamp.in/api/razorpay-webhook` (or your Vercel address + `/api/razorpay-webhook`)
+   - Webhook URL: `https://api.axamp.com/api/razorpay-webhook` (or your Vercel address + `/api/razorpay-webhook`)
    - Secret: the value from step 1
    - Alert email: your email (Razorpay emails you if deliveries keep failing)
    - Active events: **payment.captured**
@@ -148,17 +148,23 @@ If `RAZORPAY_WEBHOOK_SECRET` is missing or equal to the Key Secret, the endpoint
 Never put the Razorpay **Key Secret** or the **MongoDB link** in `src/`: anyone can read the website's code.
 They go only into the server's Environment Variables (or a local `server/.env`, which git ignores).
 
-### Hosting on Hostinger (axamp.in)
+### Hosting on Hostinger (consult.axamp.com)
 
-- **Website** → `axamp.in`: hPanel → Advanced → GIT → repo `https://github.com/RahulXTech/mind-behind-money-form.git`,
-  branch **`deploy`**, directory empty (`public_html`, must be empty first) → Deploy. Add the Auto Deployment webhook
-  to GitHub → Settings → Webhooks so every push updates the site. Install the free SSL.
-- **Payment server** → `api.axamp.in`:
+- **Website** → `consult.axamp.com`:
+  1. hPanel → Domains → **Subdomains** → create `consult` under `axamp.com`. Hostinger makes a folder for it
+     (e.g. `public_html/consult`); note the exact folder name it shows.
+  2. hPanel → Advanced → **GIT** → repo `https://github.com/RahulXTech/mind-behind-money-form.git`, branch **`deploy`**,
+     directory = that subdomain folder (it must be empty first) → Deploy. Add the Auto Deployment webhook to
+     GitHub → Settings → Webhooks so every push updates the site.
+     Manual alternative: `npm run build`, then upload the **contents** of `dist/` (index.html + assets/) into that folder.
+  3. Security → SSL → install the free SSL for `consult.axamp.com`.
+- **Payment server** → `api.axamp.com`:
   - Business / Cloud plan: hPanel → Node.js app → import this GitHub repo, root directory `server`,
-    start command `npm start` (entry `index.js`), add the environment variables, attach `api.axamp.in`.
-  - Single / Premium plan (no Node.js): deploy `server` on Vercel as above, optionally add `api.axamp.in`
+    start command `npm start` (entry `index.js`), add the environment variables, attach `api.axamp.com`.
+  - Single / Premium plan (no Node.js): deploy `server` on Vercel as above, optionally add `api.axamp.com`
     under Vercel → Domains and create the CNAME it shows in Hostinger's DNS.
-- Check `https://api.axamp.in/api/health` returns `{"ok":true}`, then set `API_URL` in `src/config.js` and push.
+  - `ALLOWED_ORIGINS` must include `https://consult.axamp.com` (the website's address), or the browser blocks payments.
+- Check `https://api.axamp.com/api/health` returns `{"ok":true}`, then set `API_URL` in `src/config.js` and push.
 
 ## Updating the script later
 

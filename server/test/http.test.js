@@ -20,7 +20,7 @@ before(async () => {
 });
 after(() => server.close());
 
-async function call(path, { method = "POST", body, raw, origin = "https://axamp.in" } = {}) {
+async function call(path, { method = "POST", body, raw, origin = "https://consult.axamp.com" } = {}) {
   const res = await fetch(base + path, {
     method,
     headers: { "Content-Type": "application/json", ...(origin ? { Origin: origin } : {}) },
@@ -44,13 +44,13 @@ test("unknown path → 404, wrong method → 405", async () => {
   assert.equal((await call("/api/verify-payment", { method: "PUT", body: {} })).status, 405);
 });
 
-test("CORS allows https://axamp.in and https://www.axamp.in (default list) and refuses other sites", async () => {
-  for (const origin of ["https://axamp.in", "https://www.axamp.in"]) {
+test("CORS allows https://consult.axamp.com and https://axamp.com (default list) and refuses other sites", async () => {
+  for (const origin of ["https://consult.axamp.com", "https://axamp.com", "https://www.axamp.com"]) {
     const r = await call("/api/create-order", { method: "OPTIONS", origin });
     assert.equal(r.status, 204);
     assert.equal(r.acao, origin);
   }
-  for (const origin of ["https://evil.example", "https://axamp.in.evil.example", "http://axamp.in"]) {
+  for (const origin of ["https://evil.example", "https://consult.axamp.com.evil.example", "http://consult.axamp.com"]) {
     const r = await call("/api/create-order", { method: "OPTIONS", origin });
     assert.equal(r.acao, null, origin);
   }
