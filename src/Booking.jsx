@@ -94,7 +94,6 @@ export default function Booking({ t, lang, prefill, onBack, onConfirmed }) {
           notes: { ...checkout.notes, bookingId: order.bookingId } });
         paymentId = payment.paymentId;
         record = await verifyServerPayment({
-          bookingId: order.bookingId,
           razorpay_order_id: payment.orderId,
           razorpay_payment_id: payment.paymentId,
           razorpay_signature: payment.signature,
@@ -121,6 +120,8 @@ export default function Booking({ t, lang, prefill, onBack, onConfirmed }) {
       console.error(error);
       setAlert(error.code === "cancelled"
         ? t("पेमेंट रद्द हो गया। जब तैयार हों, दोबारा कोशिश करें।")
+        : error.code === "pending" && paymentId
+          ? t("पेमेंट मिल गया है, कन्फ़र्मेशन बाकी है। हम जल्द ही WhatsApp पर बुकिंग कन्फ़र्म करेंगे। पेमेंट ID:") + " " + paymentId
         : error.code === "verify" && paymentId
           ? t("पेमेंट हो गया है पर कन्फ़र्म नहीं हो पाया। कृपया यह पेमेंट ID भेजकर हमसे संपर्क करें:") + " " + paymentId
           : t("पेमेंट नहीं हो पाया। कृपया दोबारा कोशिश करें।"));

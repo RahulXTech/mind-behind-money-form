@@ -3,7 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Razorpay orders + payment verification + MongoDB storage for 1:1 session bookings (Vercel functions)",
+  "description": "Razorpay orders + payment verification + MongoDB storage for 1:1 session bookings (Vercel functions or `npm start` on Hostinger / any Node host)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "mongodb": "6.10.0"
   }

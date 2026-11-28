@@ -521,24 +521,75 @@ body {
 }
 
 /* ============ 1:1 session booking ============ */
+/* 1:1 consultant meeting button — the main paid offer, so it stands out from the form */
 .session-cta {
-  display: flex; align-items: center; gap: 12px;
-  width: 100%; margin-top: 16px; padding: 12px 16px;
-  font: inherit; color: var(--navy); text-align: left;
-  background: rgba(227, 169, 58, .12);
-  border: 2px dashed rgba(185, 128, 30, .45); border-radius: 14px;
+  position: relative; overflow: hidden; isolation: isolate;
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 12px 14px;
+  width: 100%; margin-top: 18px; padding: 16px;
+  font: inherit; color: #fff; text-align: left;
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 65%, #34857f 100%);
+  border: 1.5px solid rgba(227, 169, 58, .7); border-radius: 18px;
+  box-shadow: 0 16px 32px -16px rgba(31, 90, 87, .85), inset 0 1px 0 rgba(255, 255, 255, .14);
   cursor: pointer;
-  transition: background .2s, border-color .2s;
+  transition: transform .2s, box-shadow .2s;
+  animation: ctaGlow 2.8s ease-in-out infinite;
 }
-.session-cta:hover { background: rgba(227, 169, 58, .2); border-color: var(--gold-dark); }
+/* light sweep across the button */
+.session-cta::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .16) 48%, transparent 66%);
+  transform: translateX(-110%);
+  animation: ctaSweep 4s ease-in-out infinite;
+}
+.session-cta:hover { transform: translateY(-2px); box-shadow: 0 22px 38px -16px rgba(31, 90, 87, .9), inset 0 1px 0 rgba(255, 255, 255, .14); }
+.session-cta:active { transform: translateY(0); }
 .session-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-.session-cta > .ph { flex-shrink: 0; font-size: 26px; color: var(--gold-dark); }
-.session-cta > .ph-arrow-right { font-size: 18px; color: var(--teal); transition: transform .2s; }
-.session-cta:hover > .ph-arrow-right { transform: translateX(3px); }
-.session-cta span { flex: 1; display: flex; flex-direction: column; line-height: 1.45; }
-.session-cta strong { font-size: 14px; font-weight: 700; }
-.session-cta small { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); }
-.success .session-cta { max-width: 380px; margin: 0 auto 16px; }
+@keyframes ctaGlow {
+  0%, 100% { box-shadow: 0 16px 32px -16px rgba(31, 90, 87, .85), 0 0 0 0 rgba(227, 169, 58, .45); }
+  50% { box-shadow: 0 16px 32px -16px rgba(31, 90, 87, .85), 0 0 0 7px rgba(227, 169, 58, 0); }
+}
+@keyframes ctaSweep { 0%, 55% { transform: translateX(-110%); } 100% { transform: translateX(110%); } }
+
+.cta-icon {
+  display: grid; place-items: center; width: 50px; height: 50px; border-radius: 14px;
+  background: linear-gradient(145deg, #f2c25f, var(--gold));
+  color: var(--navy); font-size: 26px;
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .4);
+}
+.cta-body { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+.cta-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 999px;
+  background: rgba(227, 169, 58, .22); border: 1px solid rgba(242, 194, 95, .55);
+  color: #ffe3a6; font-size: 11px; font-weight: 600; letter-spacing: .2px;
+}
+.cta-badge .ph { font-size: 12px; }
+.cta-title { font-size: 16px; font-weight: 700; line-height: 1.35; }
+.cta-sub { font-size: 12.5px; font-weight: 500; line-height: 1.45; color: rgba(255, 255, 255, .85); }
+
+.cta-plans { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.cta-plan {
+  padding: 5px 11px; border-radius: 999px;
+  background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .22);
+  font-size: 12.5px; font-weight: 500; color: rgba(255, 255, 255, .9);
+}
+.cta-plan b { font-weight: 700; color: #fff; }
+
+.cta-foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.cta-trust { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: rgba(255, 255, 255, .8); }
+.cta-trust .ph { font-size: 15px; color: #f2c25f; }
+.cta-go {
+  display: inline-flex; align-items: center; gap: 6px; margin-left: auto;
+  padding: 8px 16px; border-radius: 999px;
+  background: var(--gold); color: var(--navy);
+  font-size: 13.5px; font-weight: 700;
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .5);
+  transition: background .2s;
+}
+.cta-go .ph { font-size: 16px; transition: transform .2s; }
+.session-cta:hover .cta-go { background: #f2c25f; }
+.session-cta:hover .cta-go .ph { transform: translateX(3px); }
+.success .session-cta { max-width: 400px; margin: 0 auto 16px; }
 
 /* Plan cards */
 .chips.plans .chip span { gap: 2px; }

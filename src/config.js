@@ -20,6 +20,6 @@ export const CONFIG = {
   // Session plans and prices (₹). Labels are Hindi; translations live in translations.js.
   SESSION_PLANS: [
     { id: "15min", minutes: 15, amount: 499, label: "15 मिनट", desc: "एक सवाल पर फ़ोकस्ड बात", icon: "timer" },
-    { id: "45min", minutes: 45, amount: 1000, label: "45 मिनट", desc: "पूरे बिज़नेस पर गहराई से बात और प्लान", icon: "hourglass-medium" },
+    { id: "45min", minutes: 45, amount: 999, label: "45 मिनट", desc: "पूरे बिज़नेस पर गहराई से बात और प्लान", icon: "hourglass-medium" },
   ],
 };

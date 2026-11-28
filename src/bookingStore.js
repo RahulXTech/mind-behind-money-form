@@ -1,8 +1,9 @@
 /* ============ Booking storage + server calls ============
  * Every confirmed booking is kept in this browser's localStorage ("mbm-bookings") as a backup.
- * When CONFIG.API_URL is set (the server in /server, hosted on Vercel), the server is the real record:
- *   createServerOrder() → saves the booking in MongoDB and creates the Razorpay order
- *   verifyServerPayment() → checks Razorpay's signature and marks the booking "paid"
+ * When CONFIG.API_URL is set (the server in /server), the server is the real record:
+ *   createServerOrder()   → creates the Razorpay order for the plan's price (nothing saved yet)
+ *   verifyServerPayment() → server checks the signature + asks Razorpay; only a captured payment creates the
+ *                           booking in MongoDB. Throws code "pending" when the payment is authorized but not captured.
  * The Razorpay Key Secret and the MongoDB connection string live only on that server.
  */
 import { CONFIG } from "./config.js";
@@ -40,5 +41,7 @@ export const createServerOrder = (details) => post("/api/create-order", details,
 
 /** @returns {Promise<object>} the confirmed booking */
 export async function verifyServerPayment(data) {
-  return (await post("/api/verify-payment", data, "verify")).booking;
+  const json = await post("/api/verify-payment", data, "verify");
+  if (json.status === "pending" || !json.booking) throw Object.assign(new Error("Payment not captured yet"), { code: "pending" });
+  return json.booking;
 }

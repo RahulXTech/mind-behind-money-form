@@ -317,12 +317,21 @@ export default function App() {
   }
   const sessionCta = (
     <button type="button" className="session-cta" onClick={openBooking}>
-      <i className="ph ph-video-camera" aria-hidden="true"></i>
-      <span>
-        <strong>{t("1:1 सेशन चाहिए?")}</strong>
-        <small>{t("15 मिनट ₹499 · 45 मिनट ₹1,000")}</small>
+      <span className="cta-icon" aria-hidden="true"><i className="ph ph-video-camera"></i></span>
+      <span className="cta-body">
+        <span className="cta-badge"><i className="ph ph-star" aria-hidden="true"></i>{t("सबसे ज़्यादा फ़ायदेमंद")}</span>
+        <strong className="cta-title">{t("1:1 कंसल्टेंट मीटिंग बुक करें")}</strong>
+        <small className="cta-sub">{t("अपने बिज़नेस पर एक्सपर्ट से सीधी बात")}</small>
       </span>
-      <i className="ph ph-arrow-right" aria-hidden="true"></i>
+      <span className="cta-plans">
+        {CONFIG.SESSION_PLANS.map((p) => (
+          <span className="cta-plan" key={p.id}>{t(p.label)} <b>₹{p.amount.toLocaleString("en-IN")}</b></span>
+        ))}
+      </span>
+      <span className="cta-foot">
+        <span className="cta-trust"><i className="ph ph-shield-check" aria-hidden="true"></i>{t("सुरक्षित पेमेंट · तुरंत रसीद")}</span>
+        <span className="cta-go">{t("अभी बुक करें")}<i className="ph ph-arrow-right" aria-hidden="true"></i></span>
+      </span>
     </button>
   );
 

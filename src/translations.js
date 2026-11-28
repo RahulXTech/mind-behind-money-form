@@ -127,8 +127,11 @@ const HINGLISH_RAW = {
 
   // 1:1 session booking
   "1:1 सेशन बुक करें": "1:1 Session Book Karein",
-  "1:1 सेशन चाहिए?": "1:1 session chahiye?",
-  "15 मिनट ₹499 · 45 मिनट ₹1,000": "15 min ₹499 · 45 min ₹1,000",
+  "सबसे ज़्यादा फ़ायदेमंद": "Sabse zyada faydemand",
+  "1:1 कंसल्टेंट मीटिंग बुक करें": "1:1 Consultant Meeting Book Karein",
+  "अपने बिज़नेस पर एक्सपर्ट से सीधी बात": "Apne business par expert se seedhi baat",
+  "सुरक्षित पेमेंट · तुरंत रसीद": "Surakshit payment · Turant receipt",
+  "अभी बुक करें": "Abhi Book Karein",
   "1:1 सेशन": "1:1 Session",
   "सेशन चुनें": "Session chunein",
   "15 मिनट": "15 Minute",
@@ -159,6 +162,7 @@ const HINGLISH_RAW = {
   "अमाउंट": "Amount",
   "पेमेंट ID": "Payment ID",
   "फ़ोन": "Phone",
+  "पेमेंट मिल गया है, कन्फ़र्मेशन बाकी है। हम जल्द ही WhatsApp पर बुकिंग कन्फ़र्म करेंगे। पेमेंट ID:": "Payment mil gaya hai, confirmation baaki hai. Hum jald hi WhatsApp par booking confirm karenge. Payment ID:",
   "पेमेंट हो गया है पर कन्फ़र्म नहीं हो पाया। कृपया यह पेमेंट ID भेजकर हमसे संपर्क करें:": "Payment ho gaya hai par confirm nahi ho paaya. Kripya yeh Payment ID bhejkar humse sampark karein:",
   "रसीद डाउनलोड करें (PDF)": "Receipt Download Karein (PDF)",
   "फ़ॉर्म पर वापस जाएँ": "Form par wapas jaayein",
@@ -304,8 +308,11 @@ const ENGLISH_RAW = {
 
   // 1:1 session booking
   "1:1 सेशन बुक करें": "Book a 1:1 Session",
-  "1:1 सेशन चाहिए?": "Want a 1:1 session?",
-  "15 मिनट ₹499 · 45 मिनट ₹1,000": "15 min ₹499 · 45 min ₹1,000",
+  "सबसे ज़्यादा फ़ायदेमंद": "Most valuable",
+  "1:1 कंसल्टेंट मीटिंग बुक करें": "Book a 1:1 Consultant Meeting",
+  "अपने बिज़नेस पर एक्सपर्ट से सीधी बात": "Talk directly to an expert about your business",
+  "सुरक्षित पेमेंट · तुरंत रसीद": "Secure payment · Instant receipt",
+  "अभी बुक करें": "Book now",
   "1:1 सेशन": "1:1 Session",
   "सेशन चुनें": "Choose your session",
   "15 मिनट": "15 minutes",
@@ -336,6 +343,7 @@ const ENGLISH_RAW = {
   "अमाउंट": "Amount",
   "पेमेंट ID": "Payment ID",
   "फ़ोन": "Phone",
+  "पेमेंट मिल गया है, कन्फ़र्मेशन बाकी है। हम जल्द ही WhatsApp पर बुकिंग कन्फ़र्म करेंगे। पेमेंट ID:": "Payment received and awaiting confirmation. We'll confirm your booking on WhatsApp shortly. Payment ID:",
   "पेमेंट हो गया है पर कन्फ़र्म नहीं हो पाया। कृपया यह पेमेंट ID भेजकर हमसे संपर्क करें:": "Your payment went through but could not be confirmed. Please contact us with this payment ID:",
   "रसीद डाउनलोड करें (PDF)": "Download receipt (PDF)",
   "फ़ॉर्म पर वापस जाएँ": "Back to the form",

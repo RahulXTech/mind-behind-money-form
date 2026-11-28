@@ -1,5 +1,5 @@
 // CORS + small helpers shared by the API functions.
-const allowed = (process.env.ALLOWED_ORIGINS || "https://rahulxtech.github.io,http://localhost:5173")
+const allowed = (process.env.ALLOWED_ORIGINS || "https://axamp.in,https://www.axamp.in,https://rahulxtech.github.io,http://localhost:5173")
   .split(",").map((s) => s.trim()).filter(Boolean);
 
 /** Sets CORS headers. Returns true when the request is already answered (preflight / wrong method). */
